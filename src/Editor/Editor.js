@@ -3,16 +3,18 @@ import ReactQuill from "react-quill";
 import debounce from "../helpers";
 import { withStyles } from "@material-ui/core/styles";
 import styles from "./styles";
-import { db } from "../Firebase/Firebase";
+import { db, timestamp } from "../Firebase/Firebase";
 
 function Editor({ classes, selectedNote }) {
   const [text, setText] = useState("");
-  const [id, setId] = useState("");
+  const [selectedId, setSelectedId] = useState("");
 
   useEffect(() => {
     let { body, id } = selectedNote;
-    setText(body);
-    setId(id);
+    if (id !== selectedId) {
+      setText(body);
+      setSelectedId(id);
+    }
   }, [selectedNote]);
 
   const updateBody = (val) => {
@@ -23,13 +25,17 @@ function Editor({ classes, selectedNote }) {
     console.log("Debouncing all");
     setText((prev) => val);
 
-    if (id) {
-      db.collection("notes").doc(id).set(
-        {
-          body: val,
-        },
-        { merge: true }
-      );
+    if (selectedId) {
+      // db.collection("notes").doc(id).set(
+      //   {
+      //     body: val,
+      //   },
+      //   { merge: true }
+      // );
+      db.collection("notes").doc(selectedId).update({
+        body: val,
+        createdAt: timestamp(),
+      });
     }
     Promise.resolve(setText(val)).then();
     console.log(text, val);

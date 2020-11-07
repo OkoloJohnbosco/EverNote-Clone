@@ -15,7 +15,7 @@ function App() {
       .onSnapshot((snapshot) => {
         setNotes(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
       });
-  }, []);
+  }, [notes]);
 
   return (
     <div className="app-container">

@@ -13,20 +13,27 @@ function Sidebar({
   setSelectedNote,
 }) {
   const [addingNotes, setAddingNotes] = useState(false);
-  const [title, setTitle] = useState(null);
+  const [title, setTitle] = useState("");
 
   const toggleNewNoteHandler = () => {
     setTitle("");
     setAddingNotes((prevState) => !prevState);
   };
 
-  const newNoteHandler = (e) => {
-    db.collection("notes").add({
+  const newNoteHandler = async (e) => {
+    setAddingNotes(false);
+
+    const newNote = await db.collection("notes").add({
       title: title,
       body: "<p></p>",
       createdAt: timestamp(),
     });
-    setAddingNotes(false);
+
+    const newNoteIndex = notes.findIndex((item) => item.id === newNote.id);
+    const newNoteIn = notes.find((item) => item.id === newNote.id);
+    // setSelectedNote(newNoteIn);
+    console.log(newNoteIndex);
+    console.log(newNote);
   };
 
   return (

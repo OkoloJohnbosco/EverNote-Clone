@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import styles from "./styles";
 import ListItem from "@material-ui/core/ListItem";
@@ -17,12 +17,11 @@ function SidebarItem({
 }) {
   const selectNote = (e, n, i) => {
     if (!e.target.classList.contains("SidebarItem-deleteIcon-15")) {
-      setSelectedNote(null);
       setSelectedNote(n);
       setSelectedNoteIndex(i);
     }
   };
-
+  console.log(selectedNoteIndex);
   const deleteNote = ({ id }) => {
     if (
       window.confirm(
@@ -30,6 +29,9 @@ function SidebarItem({
       )
     ) {
       console.log("From sidebar Items");
+      setSelectedNoteIndex(null);
+      setSelectedNote(null);
+      console.log("object");
       db.collection("notes").doc(id).delete();
     }
   };
@@ -52,12 +54,11 @@ function SidebarItem({
           className={classes.deleteIcon}
         />
       </ListItem>
-      {note.createdAt && (
-        <p className={classes.small}>
-          <span>{formatDate(note.createdAt.seconds)}</span>
-          <span>{formatTime(note.createdAt.seconds)}</span>
-        </p>
-      )}
+
+      <p className={classes.small}>
+        <span>{formatDate(note?.createdAt.seconds)}</span>
+        <span>{formatTime(note?.createdAt.seconds)}</span>
+      </p>
     </div>
   );
 }
