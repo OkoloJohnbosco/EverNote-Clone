@@ -11,11 +11,22 @@ function Editor({ classes, selectedNote }) {
 
   useEffect(() => {
     let { body, id } = selectedNote;
+
     if (id !== selectedId) {
       setText(body);
       setSelectedId(id);
     }
-  }, [selectedNote]);
+  }, [selectedNote, selectedId]);
+
+  useEffect(() => {
+    if (text != "") {
+      db.collection("notes").doc(selectedId).update({
+        body: text,
+        createdAt: timestamp(),
+      });
+    }
+    console.log(text);
+  }, [text]);
 
   const updateBody = (val) => {
     update(val);
@@ -23,22 +34,7 @@ function Editor({ classes, selectedNote }) {
 
   const update = debounce((val) => {
     console.log("Debouncing all");
-    setText((prev) => val);
-
-    if (selectedId) {
-      // db.collection("notes").doc(id).set(
-      //   {
-      //     body: val,
-      //   },
-      //   { merge: true }
-      // );
-      db.collection("notes").doc(selectedId).update({
-        body: val,
-        createdAt: timestamp(),
-      });
-    }
-    Promise.resolve(setText(val)).then();
-    console.log(text, val);
+    setText(val);
   }, 1000);
 
   return (

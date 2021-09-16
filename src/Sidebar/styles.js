@@ -40,6 +40,7 @@ const styles = (theme) => ({
     margin: "0px",
     height: "35px",
     outline: "none",
+    fontSize: "inherit",
     border: "none",
     paddingLeft: "5px",
     "&:focus": {

@@ -30,10 +30,6 @@ function Sidebar({
     });
 
     const newNoteIndex = notes.findIndex((item) => item.id === newNote.id);
-    const newNoteIn = notes.find((item) => item.id === newNote.id);
-    // setSelectedNote(newNoteIn);
-    console.log(newNoteIndex);
-    console.log(newNote);
   };
 
   return (
@@ -44,6 +40,7 @@ function Sidebar({
       {addingNotes ? (
         <div>
           <input
+            autoFocus
             type="text"
             className={classes.newNoteInput}
             placeholder="Enter note title"

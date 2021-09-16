@@ -11,11 +11,12 @@ function App() {
 
   useEffect(() => {
     db.collection("notes")
-      .orderBy("createdAt", "desc")
+      // .orderBy("createdAt", "desc")
       .onSnapshot((snapshot) => {
         setNotes(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
       });
-  }, [notes]);
+  }, []);
+  console.log(selectedNoteIndex, "from app");
 
   return (
     <div className="app-container">
